@@ -1,0 +1,170 @@
+/* The Hub — shared web styles for tafthub.com (landing, privacy, support, 404).
+   One file so a restyle is a single edit. Loaded by every page.
+   Palette is the brand periwinkle (matches the app's Theme.brand + the logo mark). */
+
+/* ---- Design tokens ---- */
+:root {
+  --brand:        #6C63F4;   /* periwinkle — matches the iOS app + the logo */
+  --brand-2:      #8A7BFF;   /* lighter periwinkle for gradients */
+  --brand-3:      #B7A6FF;   /* lilac, for the aurora light-field */
+  --brand-strong: #4f46d6;   /* darker periwinkle for small link text (passes 4.5:1 on white) */
+  --navy:         #1F2A48;
+  --bg:           #fbfbfd;
+  --bg-tint:      #f3f1ff;
+  --surface:      #ffffff;
+  --ink:          #16161a;   /* headings — near-black */
+  --ink-2:        #34343b;   /* body text — dark enough to read on a tinted bg */
+  --muted:        #6b6b73;   /* captions / labels only */
+  --line:         #e7e7ec;
+  --radius:       14px;
+  --radius-lg:    18px;
+  --maxw:         700px;
+  --display: "Sora", "Hanken Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+  --body: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ---- Base ---- */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--body);
+  color: var(--ink-2);
+  background: var(--bg);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Typography ---- */
+h1, h2, h3 { color: var(--ink); line-height: 1.12; text-wrap: balance; }
+h1 { font-family: var(--display); font-size: clamp(30px, 6vw, 38px); font-weight: 700; letter-spacing: -0.02em; margin: 16px 0 4px; }
+h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 32px 0 8px; }
+p, li { font-size: 16px; text-wrap: pretty; }
+a { color: var(--brand-strong); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { color: var(--brand); }
+
+/* Visible keyboard focus everywhere (accessibility requirement). */
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
+
+/* ---- Brand wordmark (header of legal pages) ---- */
+.brandmark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.brandmark .mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--surface);
+  display: grid; place-items: center;
+  box-shadow: 0 4px 12px rgba(108, 99, 244, 0.20);
+}
+.brandmark .mark img { width: 22px; height: 22px; display: block; }
+.brandmark .word { font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.01em; }
+
+/* ---- Legal/content pages (privacy, support) ---- */
+.page { max-width: var(--maxw); margin: 0 auto; padding: 32px 20px 72px; }
+.page header { border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 26px; }
+.page h1 { margin-top: 18px; }
+.updated { color: var(--muted); font-size: 14px; margin: 0; }
+.lede { font-size: 17px; color: var(--navy); margin: 24px 0; line-height: 1.6; }
+.page ul { padding-left: 20px; margin: 8px 0; }
+.page li { margin: 5px 0; }
+
+footer.site { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer.site a { color: var(--muted); }
+footer.site a:hover { color: var(--brand); }
+
+/* ---- Support contact panel (brand-tinted, not a plain bordered box) ---- */
+.contact {
+  background: linear-gradient(180deg, var(--bg-tint), var(--surface));
+  border: 1px solid #e6e4fb;
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin: 24px 0;
+}
+.contact .label { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+.contact .email { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+.contact .email a { text-decoration: none; }
+.contact .turnaround { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+
+.qa { margin: 4px 0 0; }
+.qa h3 { font-size: 16px; font-weight: 600; margin: 24px 0 4px; }
+
+/* =========================  LANDING (index / 404)  ========================= */
+.landing {
+  position: relative; overflow: hidden;
+  min-height: 100dvh;                 /* dvh avoids the iOS Safari 100vh jump */
+  display: flex; flex-direction: column;
+  background: var(--bg);
+}
+
+/* Aurora — a soft periwinkle light-field that gives the hero depth + slow drift. Pure CSS,
+   sits behind everything, clipped by the landing's overflow:hidden. */
+.aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.aurora span { position: absolute; border-radius: 50%; filter: blur(72px); }
+.aurora .o1 { width: 540px; height: 540px; left: -130px; top: -150px; background: var(--brand-2); opacity: .5;  animation: drift1 19s ease-in-out infinite; }
+.aurora .o2 { width: 460px; height: 460px; right: -120px; top: -70px; background: var(--brand-3); opacity: .42; animation: drift2 23s ease-in-out infinite; }
+.aurora .o3 { width: 430px; height: 430px; left: 28%; bottom: -200px; background: #c9b8ff;        opacity: .4;  animation: drift3 21s ease-in-out infinite; }
+@keyframes drift1 { 50% { transform: translate(60px, 44px) scale(1.08); } }
+@keyframes drift2 { 50% { transform: translate(-52px, 52px) scale(1.05); } }
+@keyframes drift3 { 50% { transform: translate(42px, -42px) scale(1.10); } }
+
+/* A whisper of grain to keep the soft gradients from banding. Above the aurora, below content. */
+.landing::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.hero {
+  position: relative; z-index: 2;
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 56px 24px;
+}
+
+/* The logo mark presented on a clean white tile (like an app icon), gently floating. */
+.badge-wrap { margin-bottom: 26px; }
+.badge {
+  width: 92px; height: 92px; border-radius: 24px;
+  background: var(--surface);
+  display: grid; place-items: center;
+  box-shadow: 0 16px 40px rgba(108, 99, 244, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  animation: float 5.5s ease-in-out infinite;
+}
+.badge img { width: 62px; height: 62px; display: block; }
+@keyframes float { 50% { transform: translateY(-7px); } }
+
+.hero h1 { font-size: clamp(40px, 10vw, 68px); letter-spacing: -0.025em; margin: 0 0 12px; }
+.tagline { font-size: clamp(17px, 2.4vw, 20px); color: var(--navy); font-weight: 600; margin: 0; }
+.sub { font-size: 16px; color: var(--ink-2); max-width: 460px; margin: 14px 0 28px; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);   /* one purposeful frosted accent */
+  border: 1px solid #e6e4fb; color: var(--brand-strong);
+  font-size: 14px; font-weight: 600; padding: 9px 17px; border-radius: 999px; margin-bottom: 34px;
+  box-shadow: 0 4px 14px rgba(108, 99, 244, 0.10);
+}
+.pill .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--brand); animation: pulse 2.4s ease-out infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(108, 99, 244, .5); } 70%, 100% { box-shadow: 0 0 0 7px rgba(108, 99, 244, 0); } }
+
+.links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.links a {
+  text-decoration: none; font-size: 15px; font-weight: 600;
+  padding: 12px 22px; border-radius: var(--radius);
+  border: 1px solid var(--line); color: var(--navy); background: rgba(255, 255, 255, 0.82);
+  transition: transform .18s cubic-bezier(0.22, 1, 0.36, 1), border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.links a:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(108, 99, 244, .16); }
+.links a:active { transform: translateY(0); }
+
+footer.landing-foot { position: relative; z-index: 2; text-align: center; color: var(--muted); font-size: 14px; padding: 24px; }
+
+/* ---- First-load choreography: hero elements rise + fade in, staggered via --d ---- */
+.reveal { opacity: 0; animation: rise .7s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: var(--d, 0s); }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* Motion is opt-out: everything resolves to its calm, fully-visible end state. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; opacity: 1; }
+  .badge, .pill .dot, .aurora span { animation: none; }
+}
